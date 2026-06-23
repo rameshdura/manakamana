@@ -1,0 +1,14 @@
+{
+  "$schema": "https://app.kilo.ai/config.json",
+  "provider": {
+    "openai": {
+      "models": {
+        "*": {
+          "limit": {
+            "output": 2048
+          }
+        }
+      }
+    }
+  }
+}

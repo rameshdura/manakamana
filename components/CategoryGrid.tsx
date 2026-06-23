@@ -1,0 +1,48 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+
+// Import categories from shop page
+const categories = [
+  { name: "All", image: "/hero.jpg" },
+  { name: "Snacks", image: "/momo.jpg" },
+  { name: "Ready to Eat", image: "/thali.jpg" },
+  { name: "Spices", image: "/turmeric.jpg" },
+  { name: "Grains", image: "/grains.jpg" },
+];
+
+export default function CategoryGrid() {
+  return (
+    <section className="py-16 bg-white dark:bg-[hsl(224_40%_9%)] bg-washi shadow-inner">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl lg:text-4xl font-bold text-stone-900 dark:text-stone-100 text-center mb-16">Our Categories</h2>
+        
+        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          {categories.map((category) => (
+            <Link 
+              key={category.name} 
+              href={`/shop?category=${category.name.toLowerCase()}`}
+              className="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <div className="aspect-[3/2] relative">
+                <Image 
+                  src={category.image} 
+                  alt={category.name} 
+                  fill 
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+              </div>
+              
+              <div className="absolute bottom-4 left-4 right-4">
+                <h3 className="text-2xl font-bold text-white leading-tight">{category.name}</h3>
+                <div className="mt-2 w-16 h-1 bg-white/30 rounded-full" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

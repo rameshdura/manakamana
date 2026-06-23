@@ -1,0 +1,103 @@
+'use client';
+
+import { useRouter, usePathname } from 'next/navigation';
+import { Home, Settings, FileText, LogOut, Menu, Image, Tags, Type, Search, Newspaper, Store as StoreIcon } from 'lucide-react';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setMounted(true);
+    }, 0);
+  }, []);
+
+  const handleLogout = () => {
+    document.cookie = "auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    router.push('/login');
+    router.refresh();
+  };
+
+  const navItems = [
+    { name: 'Dashboard', href: '/admin', icon: Home },
+    { name: 'Pages', href: '/admin/pages', icon: FileText },
+    { name: 'Images', href: '/admin/images', icon: Image },
+    { name: 'Texts', href: '/admin/texts', icon: Type },
+    { name: 'Categories', href: '/admin/categories', icon: Tags },
+    { name: 'Store', href: '/admin/store', icon: StoreIcon },
+    { name: 'Updates (Blog)', href: '/admin/updates', icon: Newspaper },
+    { name: 'SEO', href: '/admin/seo', icon: Search },
+    { name: 'Settings', href: '/admin/settings', icon: Settings },
+  ];
+
+  if (!mounted) return null;
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-[hsl(224_40%_9%)] flex">
+      {/* Sidebar */}
+      <aside className={`bg-slate-900 text-white transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-20'} flex flex-col`}>
+        <div className="h-16 flex items-center justify-between px-4 border-b border-slate-800 dark:border-[hsl(224_30%_18%)]">
+          {isSidebarOpen && <span className="text-xl font-bold tracking-tight text-white">Admin CMS</span>}
+          <button 
+            onClick={() => setSidebarOpen(!isSidebarOpen)} 
+            className="p-2 rounded-lg hover:bg-slate-800 dark:hover:bg-[hsl(224_30%_18%)] transition-colors text-slate-400 dark:text-stone-400 hover:text-white dark:hover:text-stone-100 mx-auto"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
+        
+        <nav className="flex-1 py-6 flex flex-col gap-2 px-3">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors group ${
+                  isActive ? 'bg-blue-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                }`}
+                title={!isSidebarOpen ? item.name : undefined}
+              >
+                <Icon className={`h-5 w-5 flex-shrink-0 ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-white'}`} />
+                {isSidebarOpen && <span className="font-medium">{item.name}</span>}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="p-4 border-t border-slate-800 dark:border-[hsl(224_30%_18%)]">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-slate-400 dark:text-stone-400 hover:bg-red-500/10 hover:text-red-400 dark:hover:text-red-400 transition-colors group"
+            title={!isSidebarOpen ? "Logout" : undefined}
+          >
+            <LogOut className="h-5 w-5 flex-shrink-0 group-hover:text-red-400" />
+            {isSidebarOpen && <span className="font-medium">Logout</span>}
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <header className="h-16 bg-white dark:bg-[hsl(224_40%_9%)] border-b border-gray-200 dark:border-[hsl(224_30%_18%)] flex items-center px-8 shadow-sm">
+          <h1 className="text-xl font-semibold text-gray-800 dark:text-stone-100">
+            {navItems.find(item => item.href === pathname)?.name || 'Dashboard'}
+          </h1>
+        </header>
+        <div className="flex-1 overflow-auto p-8">
+          {children}
+        </div>
+      </main>
+    </div>
+  );
+}

@@ -1,11 +1,6 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# Agency Rules - Manakamana Project
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
-
-<!-- BEGIN:shadcn-ui-rules -->
-# UI Framework: shadcn/ui
+## UI Framework: shadcn/ui
 
 This project uses **shadcn/ui** for all component development. When creating new components or modifying existing ones:
 
@@ -14,7 +9,9 @@ This project uses **shadcn/ui** for all component development. When creating new
 3. **Refer to the docs** - `node_modules/next/dist/docs/` for Next.js version specific APIs
 
 ### Available shadcn/ui Components
+
 Check `components/ui/` for available components like:
+
 - Button
 - Input
 - Card
@@ -24,13 +21,11 @@ Check `components/ui/` for available components like:
 - And more...
 
 ### Benefits of Using shadcn/ui
+
 - Consistent design system
 - Built-in accessibility
-- Dark mode support out of the box
-- Less write custom CSS
+- Dark mode support out of the box -少 write custom CSS
 
-### Current shadcn Configuration
-- Style: base-nova
-- Icon Library: lucide
-- CSS Variables: enabled (using HSL format)
-<!-- END:shadcn-ui-rules -->
+# token output
+
+maxToken=2048

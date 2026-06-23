@@ -1,26 +1,188 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* Base Neutral Backgrounds - Soft crisp off-white ice blue */
+  --background: hsl(220 33% 98%);
+  --foreground: hsl(224 71% 12%);
+
+  /* Card & Popovers */
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(224 71% 12%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(224 71% 12%);
+
+  /* Brand Core - Himalayan Royal Blue */
+  --primary: hsl(224 76% 28%);
+  --primary-foreground: hsl(0 0% 100%);
+
+  /* Secondary - Light subtle blue-gray */
+  --secondary: hsl(220 20% 92%);
+  --secondary-foreground: hsl(224 76% 28%);
+
+  /* Muted Layout Elements */
+  --muted: hsl(220 20% 92%);
+  --muted-foreground: hsl(220 15% 45%);
+
+  /* Accent Hover States */
+  --accent: hsl(220 30% 94%);
+  --accent-foreground: hsl(224 76% 28%);
+
+  /* Destructive/Alert - Crimson Red */
+  --destructive: hsl(348 83% 47%);
+  --destructive-foreground: hsl(0 0% 100%);
+
+  /* Borders and Inputs */
+  --border: hsl(220 20% 85%);
+  --input: hsl(220 20% 85%);
+  --ring: hsl(224 76% 28%);
+  
+  /* Charts */
+  --chart-1: hsl(224 76% 28%);
+  --chart-2: hsl(210 60% 45%);
+  --chart-3: hsl(190 50% 50%);
+  --chart-4: hsl(170 40% 60%);
+  --chart-5: hsl(150 30% 70%);
+  
+  --radius: 0.5rem;
+
+  /* Sidebar */
+  --sidebar: hsl(220 33% 98%);
+  --sidebar-foreground: hsl(224 71% 12%);
+  --sidebar-primary: hsl(224 76% 28%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(220 20% 92%);
+  --sidebar-accent-foreground: hsl(224 76% 28%);
+  --sidebar-border: hsl(220 20% 85%);
+  --sidebar-ring: hsl(224 76% 28%);
+
+  /* Washi Paper Variables */
+  --washi-image: url("/white-washi.jpg");
+  --washi-blend: multiply;
+}
+
+.dark {
+  /* Midnight Slate Canvas (Mountain night sky) */
+  --background: hsl(224 40% 6%);
+  --foreground: hsl(220 30% 96%);
+
+  /* Card & Popovers */
+  --card: hsl(224 40% 9%);
+  --card-foreground: hsl(220 30% 96%);
+  --popover: hsl(224 40% 9%);
+  --popover-foreground: hsl(220 30% 96%);
+
+  /* Brand Core shifted brighter for Dark Mode readability */
+  --primary: hsl(224 80% 65%);
+  --primary-foreground: hsl(224 40% 6%);
+
+  /* Secondary Layout Tones */
+  --secondary: hsl(224 30% 15%);
+  --secondary-foreground: hsl(220 30% 96%);
+
+  /* Muted Elements */
+  --muted: hsl(224 30% 15%);
+  --muted-foreground: hsl(220 15% 65%);
+
+  /* Accent/Hover */
+  --accent: hsl(224 30% 18%);
+  --accent-foreground: hsl(220 30% 96%);
+
+  /* Destructive */
+  --destructive: hsl(348 83% 55%);
+  --destructive-foreground: hsl(0 0% 100%);
+
+  /* Borders and Focus Rings */
+  --border: hsl(224 30% 18%);
+  --input: hsl(224 30% 18%);
+  --ring: hsl(224 80% 65%);
+  
+  /* Charts */
+  --chart-1: hsl(224 80% 65%);
+  --chart-2: hsl(210 70% 55%);
+  --chart-3: hsl(190 60% 50%);
+  --chart-4: hsl(170 50% 45%);
+  --chart-5: hsl(150 40% 40%);
+
+  /* Sidebar */
+  --sidebar: hsl(224 40% 6%);
+  --sidebar-foreground: hsl(220 30% 96%);
+  --sidebar-primary: hsl(224 80% 65%);
+  --sidebar-primary-foreground: hsl(224 40% 6%);
+  --sidebar-accent: hsl(224 30% 15%);
+  --sidebar-accent-foreground: hsl(220 30% 96%);
+  --sidebar-border: hsl(224 30% 18%);
+  --sidebar-ring: hsl(224 80% 65%);
+
+  /* Washi Paper Variables */
+  --washi-image: url("/dark-washi.jpg");
+  --washi-blend: color-dodge;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    /* Direct application of background and foreground colors */
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+  html {
+    @apply font-sans;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility bg-washi {
+  background-image: var(--washi-image);
+  background-size: 400px;
+  background-blend-mode: var(--washi-blend);
+  background-repeat: repeat;
 }

@@ -1,0 +1,140 @@
+'use client';
+
+import { useState } from 'react';
+import { Save, Globe, Settings as SettingsIcon } from 'lucide-react';
+
+const AVAILABLE_LANGUAGES = [
+  'English',
+  'Japanese',
+  'Chinese',
+  'Vietnamese',
+  'Nepali',
+  'Thai',
+  'Spanish'
+];
+
+export default function SettingsPage() {
+  const [defaultLanguage, setDefaultLanguage] = useState('English');
+  const [otherLanguages, setOtherLanguages] = useState<string[]>(['Japanese']);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const toggleOtherLanguage = (lang: string) => {
+    // Prevent unchecking if it's the default language, though typically default is handled separately
+    setOtherLanguages(prev => 
+      prev.includes(lang) 
+        ? prev.filter(l => l !== lang)
+        : [...prev, lang]
+    );
+  };
+
+  const handleSave = () => {
+    setIsSaving(true);
+    // Simulate API call
+    setTimeout(() => {
+      setIsSaving(false);
+    }, 600);
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+        <div>
+          <h2 className="text-3xl font-bold text-gray-900 tracking-tight">System Settings</h2>
+          <p className="text-gray-500 mt-2 text-lg">Configure global application settings and regional preferences.</p>
+        </div>
+        <button 
+          onClick={handleSave}
+          disabled={isSaving}
+          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-70 shadow-sm"
+        >
+          <Save className="w-5 h-5" />
+          {isSaving ? 'Saving...' : 'Save Settings'}
+        </button>
+      </div>
+
+      <div className="space-y-6">
+        
+        {/* Languages Section */}
+        <div className="bg-white dark:bg-[hsl(224_40%_9%)] rounded-xl shadow-sm border border-gray-200 dark:border-[hsl(224_30%_18%)] overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-[hsl(224_30%_18%)] bg-gray-50 dark:bg-[hsl(224_30%_15%)] flex items-center gap-2">
+            <Globe className="w-5 h-5 text-gray-500" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-stone-100">Language Settings</h3>
+          </div>
+          
+          <div className="p-6">
+            <div className="mb-8 max-w-sm">
+              <label className="block text-sm font-medium text-gray-700 dark:text-stone-300 mb-2">
+                Default Language
+              </label>
+              <select 
+                value={defaultLanguage}
+                onChange={(e) => setDefaultLanguage(e.target.value)}
+                className="w-full border border-gray-300 dark:border-[hsl(224_30%_18%)] rounded-lg py-2.5 px-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white dark:bg-[hsl(224_40%_9%)] text-gray-900 dark:text-stone-100 shadow-sm"
+              >
+                {AVAILABLE_LANGUAGES.map(lang => (
+                  <option key={lang} value={lang}>{lang}</option>
+                ))}
+              </select>
+              <p className="text-sm text-gray-500 dark:text-stone-400 mt-2">
+                This is the primary language loaded when a user visits the website.
+              </p>
+            </div>
+
+            <div className="border-t border-gray-100 dark:border-[hsl(224_30%_18%)] pt-6">
+              <label className="block text-sm font-medium text-gray-700 dark:text-stone-300 mb-4">
+                Other Supported Languages
+              </label>
+              <p className="text-sm text-gray-500 dark:text-stone-400 mb-4">
+                Select the additional languages you want to offer in the website&apos;s language switcher.
+              </p>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                {AVAILABLE_LANGUAGES.map(lang => {
+                  const isDefault = lang === defaultLanguage;
+                  const isSelected = otherLanguages.includes(lang) || isDefault;
+                  
+                  return (
+                    <label 
+                      key={lang} 
+                      className={`flex items-center p-3 border rounded-lg cursor-pointer transition-colors ${
+                        isDefault 
+                          ? 'border-blue-500 bg-blue-50/50 cursor-not-allowed' 
+                          : isSelected 
+                            ? 'border-blue-500 bg-blue-50' 
+                            : 'border-gray-200 hover:bg-gray-50'
+                      }`}
+                    >
+                      <input 
+                        type="checkbox" 
+                        className="w-4 h-4 text-blue-600 dark:text-[hsl(224_80%_65%)] border-gray-300 dark:border-[hsl(224_30%_18%)] rounded focus:ring-blue-500 focus:ring-[hsl(224_80%_65%)]"
+                        checked={isSelected}
+                        onChange={() => toggleOtherLanguage(lang)}
+                        disabled={isDefault}
+                      />
+                      <span className="ml-3 text-sm font-medium text-gray-900">
+                        {lang}
+                        {isDefault && <span className="ml-2 text-xs text-blue-600 font-normal">(Default)</span>}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Placeholder for other settings */}
+        <div className="bg-white dark:bg-[hsl(224_40%_9%)] rounded-xl shadow-sm border border-gray-200 dark:border-[hsl(224_30%_18%)] overflow-hidden opacity-60 dark:opacity-50">
+          <div className="px-6 py-4 border-b border-gray-200 dark:border-[hsl(224_30%_18%)] bg-gray-50 dark:bg-[hsl(224_30%_15%)] flex items-center gap-2">
+            <SettingsIcon className="w-5 h-5 text-gray-500" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-stone-100">General Settings</h3>
+          </div>
+          <div className="p-6">
+            <p className="text-gray-500 italic text-sm">Site name, timezone, and contact email configurations will go here.</p>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  );
+}
