@@ -5,7 +5,7 @@ import { ShoppingBag, Search, Menu, Share2, Globe, MessageCircle, Heart, X } fro
 import Link from "next/link";
 import DarkModeToggle from "./DarkModeToggle";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,11 +44,9 @@ export default function Navbar() {
         {/* Right Side Icons */}
         <div className="flex items-center">
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="gap-1 px-2">
-                <Globe className="h-4 w-4" />
-                <span className="text-sm font-medium">EN</span>
-              </Button>
+            <DropdownMenuTrigger className={buttonVariants({ variant: "ghost", size: "sm", className: "gap-1 px-2" })}>
+              <Globe className="h-4 w-4" />
+              <span className="text-sm font-medium">EN</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>EN - English</DropdownMenuItem>
@@ -109,11 +107,9 @@ export default function Navbar() {
 
         <div className="flex items-center gap-4">
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="gap-2 px-2">
-                <Globe className="h-4 w-4" />
-                <span className="text-sm font-medium">EN</span>
-              </Button>
+            <DropdownMenuTrigger className={buttonVariants({ variant: "ghost", size: "sm", className: "gap-2 px-2" })}>
+              <Globe className="h-4 w-4" />
+              <span className="text-sm font-medium">EN</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>EN - English</DropdownMenuItem>

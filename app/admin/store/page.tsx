@@ -5,6 +5,14 @@ import { Plus, Edit2, Trash2, Image as ImageIcon, Store as StoreIcon } from 'luc
 
 const CATEGORIES = ['Starters', 'Main Courses', 'Desserts', 'Beverages', 'Other'];
 
+interface StoreItem {
+  id: string;
+  name: string;
+  price: string;
+  desc: string;
+  image: string;
+}
+
 // Dummy initial data
 const initialStoreItems = {
   'Starters': [
@@ -23,7 +31,7 @@ const initialStoreItems = {
 
 export default function StoreManager() {
   const [activeTab, setActiveTab] = useState(CATEGORIES[0]);
-  const [storeItems] = useState<Record<string, Record<string, unknown>[]>>(initialStoreItems);
+  const [storeItems] = useState<Record<string, StoreItem[]>>(initialStoreItems);
 
   const activeItems = storeItems[activeTab] || [];
 
