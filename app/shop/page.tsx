@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Search, X, ShoppingCart, Star } from "lucide-react";
+import { Search, X, ShoppingCart, Star, ArrowLeft } from "lucide-react";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ReactCountryFlag from "react-country-flag";
@@ -76,35 +76,44 @@ function ShopContent() {
     <div className="min-h-screen bg-stone-50 dark:bg-[hsl(224_40%_6%)] font-sans selection:bg-primary/20 dark:selection:bg-[hsl(224_80%_65%)]/20 overflow-x-hidden">
       <Navbar />
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12">
+      <main className="w-full max-w-[120rem] 2xl:max-w-[160rem] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 pt-32 pb-12">
         <div className="mb-12">
           <div className="text-center mb-10">
             <h2 className="text-3xl lg:text-4xl font-bold text-stone-900 dark:text-stone-100 mb-4">Shop by Category</h2>
             <p className="text-stone-500 dark:text-stone-400 text-lg max-w-2xl mx-auto">Browse our collection of authentic Nepali products</p>
           </div>
 
-          {/* Countries / Flags */}
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
-            {countries.map((country) => (
-              <button 
-                key={country.code} 
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-stone-200 dark:border-[hsl(224_30%_18%)] bg-white dark:bg-[hsl(224_40%_9%)] hover:border-primary/50 hover:shadow-md transition-all group"
+          {/* Countries / Flags Marquee */}
+          <div className="relative flex overflow-hidden mb-10 w-full group [--gap:0.75rem] select-none [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            {[0, 1, 2, 3].map((setIndex) => (
+              <div 
+                key={setIndex} 
+                className="flex animate-marquee shrink-0 gap-[--gap] pr-[--gap] group-hover:[animation-play-state:paused]"
+                aria-hidden={setIndex > 0 ? "true" : "false"}
               >
-                <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center bg-stone-100 dark:bg-stone-800 shrink-0">
-                  <ReactCountryFlag 
-                    countryCode={country.code} 
-                    svg 
-                    style={{ width: '1.5em', height: '1.5em', objectFit: 'cover' }} 
-                    title={country.name} 
-                  />
-                </div>
-                <span className="text-xs font-semibold text-stone-600 dark:text-stone-300 group-hover:text-primary transition-colors">{country.name}</span>
-              </button>
+                {countries.map((country) => (
+                  <button 
+                    key={`${country.code}-${setIndex}`} 
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-stone-200 dark:border-[hsl(224_30%_18%)] bg-white dark:bg-[hsl(224_40%_9%)] hover:border-primary/50 hover:shadow-md transition-all group/btn whitespace-nowrap cursor-pointer"
+                    tabIndex={setIndex > 0 ? -1 : 0}
+                  >
+                    <div className="w-5 h-5 rounded-full overflow-hidden flex items-center justify-center bg-stone-100 dark:bg-stone-800 shrink-0">
+                      <ReactCountryFlag 
+                        countryCode={country.code} 
+                        svg 
+                        style={{ width: '1.5em', height: '1.5em', objectFit: 'cover' }} 
+                        title={country.name} 
+                      />
+                    </div>
+                    <span className="text-xs font-semibold text-stone-600 dark:text-stone-300 group-hover/btn:text-primary transition-colors">{country.name}</span>
+                  </button>
+                ))}
+              </div>
             ))}
           </div>
           
           {/* Categories */}
-          <div className="flex overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden gap-6 py-6 px-2 snap-x snap-mandatory max-w-full w-full justify-start sm:justify-center mb-2">
+          <div className="flex overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden gap-6 py-6 px-4 sm:px-2 -mx-4 sm:mx-0 snap-x snap-mandatory justify-start sm:justify-center mb-2">
             {categories.map((cat) => (
               <Link
                 key={cat.name}
@@ -195,18 +204,18 @@ function ShopContent() {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-[1px] bg-stone-200 dark:bg-[hsl(224_30%_18%)] border border-stone-200 dark:border-[hsl(224_30%_18%)] rounded-3xl overflow-hidden shadow-sm">
           {loading ? (
             // Skeleton Loaders
             Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="flex flex-col gap-4 p-4 rounded-3xl bg-white dark:bg-[hsl(224_40%_9%)] border border-stone-100 dark:border-[hsl(224_30%_18%)] shadow-sm animate-pulse">
-                <div className="w-full aspect-square bg-stone-200/60 dark:bg-[hsl(224_30%_15%)] rounded-2xl">
+              <div key={i} className="flex flex-col bg-white dark:bg-[hsl(224_40%_9%)] animate-pulse overflow-hidden p-4 sm:p-6">
+                <div className="w-full aspect-square bg-stone-200/60 dark:bg-[hsl(224_30%_15%)] rounded-2xl overflow-hidden">
                   {/* SVG Placeholder Pattern inside skeleton */}
                   <svg className="w-full h-full text-stone-300/50 dark:text-stone-400/30 p-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <div className="space-y-3 px-2 pb-2">
+                <div className="space-y-3 pt-5">
                   <div className="h-4 bg-stone-200/60 dark:bg-[hsl(224_30%_15%)] rounded-full w-1/3"></div>
                   <div className="h-5 bg-stone-200/80 dark:bg-[hsl(224_30%_15%)] rounded-full w-3/4"></div>
                   <div className="h-6 bg-stone-200/80 dark:bg-[hsl(224_30%_15%)] rounded-full w-1/4 mt-4"></div>
@@ -220,22 +229,22 @@ function ShopContent() {
                 key={product.id} 
                 href={`?category=${encodeURIComponent(activeCategory)}&product=${product.id}`}
                 scroll={false}
-                className="group flex flex-col p-3 sm:p-4 rounded-3xl bg-white dark:bg-[hsl(224_40%_9%)] border border-stone-100 dark:border-[hsl(224_30%_18%)] shadow-sm hover:shadow-xl hover:border-primary/20 dark:hover:border-[hsl(224_80%_65%)]/20 transition-all cursor-pointer animate-in fade-in zoom-in-95 duration-500 fill-mode-both"
+                className="group flex flex-col bg-white dark:bg-[hsl(224_40%_9%)] hover:bg-stone-50/50 dark:hover:bg-[hsl(224_40%_12%)] transition-colors cursor-pointer animate-in fade-in zoom-in-95 duration-500 fill-mode-both overflow-hidden p-4 sm:p-6"
                 style={{ animationDelay: `${i * 100}ms` }}
               >
-                <div className="relative w-full aspect-square rounded-2xl overflow-hidden mb-4 bg-white dark:bg-[hsl(224_40%_9%)]">
+                <div className="relative w-full aspect-square overflow-hidden bg-stone-100 dark:bg-[hsl(224_30%_15%)] rounded-2xl">
                   <Image 
                     src={product.image} 
                     alt={product.name} 
                     fill 
-                    className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute top-3 left-3 bg-white/90 dark:bg-[hsl(224_40%_9%)]/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm">
                     {product.category}
                   </div>
                 </div>
-                <div className="px-2 pb-2 flex flex-col flex-1">
-                  <div className="flex items-center gap-1 mb-1">
+                <div className="pt-4 sm:pt-5 flex flex-col flex-1">
+                  <div className="flex items-center gap-1 mb-1.5">
                     <Star className="w-3.5 h-3.5 fill-primary/80 dark:fill-[hsl(224_80%_65%)]/80 text-primary/80 dark:text-[hsl(224_80%_65%)]/80" />
                     <Star className="w-3.5 h-3.5 fill-primary/80 dark:fill-[hsl(224_80%_65%)]/80 text-primary/80 dark:text-[hsl(224_80%_65%)]/80" />
                     <Star className="w-3.5 h-3.5 fill-primary/80 dark:fill-[hsl(224_80%_65%)]/80 text-primary/80 dark:text-[hsl(224_80%_65%)]/80" />
@@ -243,7 +252,7 @@ function ShopContent() {
                     <Star className="w-3.5 h-3.5 fill-primary/80 dark:fill-[hsl(224_80%_65%)]/80 text-primary/80 dark:text-[hsl(224_80%_65%)]/80" />
                     <span className="text-xs text-stone-400 dark:text-stone-500 ml-1">(12)</span>
                   </div>
-                  <h3 className="font-bold text-stone-900 dark:text-stone-100 text-sm sm:text-lg mb-1 group-hover:text-primary transition-colors line-clamp-2">
+                  <h3 className="font-bold text-stone-900 dark:text-stone-100 text-sm sm:text-base mb-1 group-hover:text-primary transition-colors line-clamp-2">
                     {product.name}
                   </h3>
                   <div className="mt-auto pt-4 flex items-center justify-between">
@@ -263,7 +272,7 @@ function ShopContent() {
 
       {/* Product Detail Overlay */}
       {selectedProduct && (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-stone-50 dark:bg-[hsl(224_40%_6%)] animate-in fade-in zoom-in-95 duration-400">
+        <div className="fixed inset-0 z-40 overflow-y-auto bg-stone-50 dark:bg-[hsl(224_40%_6%)] animate-in fade-in zoom-in-95 duration-400">
           
           {/* Half Gradient Background Image */}
           <div className="absolute top-0 left-0 w-full h-[60vh] z-0 overflow-hidden">
@@ -277,17 +286,26 @@ function ShopContent() {
              />
           </div>
 
+          {/* Back Button */}
+          <Link 
+            href={`?category=${encodeURIComponent(activeCategory)}`}
+            scroll={false}
+            className="fixed top-20 md:top-24 left-4 md:left-8 z-50 bg-black/40 dark:bg-white/10 hover:bg-black/60 dark:hover:bg-white/20 backdrop-blur-md p-3 rounded-full text-white transition-all hover:-translate-x-1 hover:scale-110 shadow-lg"
+          >
+            <ArrowLeft className="w-6 h-6" />
+          </Link>
+
           {/* Close Button */}
           <Link 
             href={`?category=${encodeURIComponent(activeCategory)}`}
             scroll={false}
-            className="fixed top-6 right-6 z-50 bg-black/40 dark:bg-white/10 hover:bg-black/60 dark:hover:bg-white/20 backdrop-blur-md p-3 rounded-full text-white transition-all hover:rotate-90 hover:scale-110"
+            className="fixed top-20 md:top-24 right-4 md:right-8 z-50 bg-black/40 dark:bg-white/10 hover:bg-black/60 dark:hover:bg-white/20 backdrop-blur-md p-3 rounded-full text-white transition-all hover:rotate-90 hover:scale-110 shadow-lg"
           >
             <X className="w-6 h-6" />
           </Link>
 
           {/* Content */}
-          <div className="relative z-30 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 min-h-screen flex flex-col justify-center">
+          <div className="relative z-30 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 md:pt-40 pb-32 min-h-screen flex flex-col justify-center">
              <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                 
                 {/* Product Image */}

@@ -13,11 +13,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { useRouter } from "next/navigation";
+
 export default function Navbar() {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isCategoryExpanded, setIsCategoryExpanded] = useState(false);
+
+  const categories = ["All", "Snacks", "Ready to Eat", "Spices", "Grains"];
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-white dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800">
@@ -166,6 +172,36 @@ export default function Navbar() {
             <SheetTitle>Menu</SheetTitle>
           </SheetHeader>
           <div className="flex flex-col gap-4 mt-6 px-4 pb-4">
+            {/* Category Collapsible */}
+            <div className="px-3 mb-4 pb-4 border-b border-border">
+              <button 
+                onClick={() => setIsCategoryExpanded(!isCategoryExpanded)}
+                className="flex w-full items-center justify-between bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-3 rounded-lg text-base font-bold transition-all shadow-sm focus:outline-none"
+              >
+                Shop by Category
+                <svg className={`w-5 h-5 ml-2 transition-transform duration-300 ${isCategoryExpanded ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              <div className={`grid transition-all duration-300 ease-in-out ${isCategoryExpanded ? 'grid-rows-[1fr] opacity-100 mt-2' : 'grid-rows-[0fr] opacity-0'}`}>
+                <div className="overflow-hidden flex flex-col gap-1 bg-stone-50 dark:bg-stone-800/50 rounded-lg">
+                  {categories.map((cat) => (
+                    <button 
+                      key={cat}
+                      className="text-left px-4 py-3 text-base hover:bg-accent hover:text-primary transition-colors focus:outline-none"
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        router.push(`/shop?category=${encodeURIComponent(cat)}`);
+                      }}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
             <Link href="/" className="text-lg font-medium hover:text-primary py-2 px-3 rounded-md hover:bg-accent transition-colors" onClick={() => setIsMenuOpen(false)}>
               Home
             </Link>
