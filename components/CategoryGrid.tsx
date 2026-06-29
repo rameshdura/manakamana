@@ -14,15 +14,15 @@ const categories = [
 
 export default function CategoryGrid() {
   return (
-    <section className="py-16 bg-white dark:bg-[hsl(224_40%_9%)] bg-washi shadow-inner">
+    <section className="py-6 md:py-8 bg-white dark:bg-[hsl(224_40%_9%)] bg-washi shadow-inner">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl lg:text-4xl font-bold text-stone-900 dark:text-stone-100 text-center mb-16">Our Categories</h2>
+        <h2 className="text-3xl lg:text-4xl font-bold text-stone-900 dark:text-stone-100 text-center mb-8">Our Categories</h2>
         
-        <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6">
           {categories.map((category) => (
             <Link 
               key={category.name} 
-              href={`/shop?category=${category.name.toLowerCase()}`}
+              href={`/shop?category=${encodeURIComponent(category.name)}`}
               className="group relative overflow-hidden rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300"
             >
               <div className="aspect-[3/2] relative">

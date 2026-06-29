@@ -255,10 +255,22 @@ function ShopContent() {
                   <h3 className="font-bold text-stone-900 dark:text-stone-100 text-sm sm:text-base mb-1 group-hover:text-primary transition-colors line-clamp-2">
                     {product.name}
                   </h3>
-                  <div className="mt-auto pt-4 flex items-center justify-between">
-                    <span className="text-lg sm:text-xl font-extrabold text-stone-900 dark:text-stone-100">{product.price}</span>
-                    <button className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-stone-50 dark:bg-[hsl(224_30%_15%)] border border-stone-200 dark:border-[hsl(224_30%_18%)] flex items-center justify-center text-stone-600 dark:text-stone-300 group-hover:bg-primary dark:group-hover:bg-[hsl(224_80%_65%)] group-hover:text-white dark:group-hover:text-[hsl(224_40%_6%)] group-hover:border-primary dark:group-hover:border-[hsl(224_80%_65%)] transition-all">
-                      <ShoppingCart className="w-4 h-4" />
+                  <div className="mt-auto pt-4 flex flex-col gap-3">
+                    <div className="h-7 flex items-center">
+                      {product.price ? (
+                        <span className="text-lg sm:text-xl font-normal text-red-600 dark:text-red-400">{product.price}</span>
+                      ) : (
+                        <span className="text-sm text-stone-400 dark:text-stone-500 italic">Price on Request</span>
+                      )}
+                    </div>
+                    <button 
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                      className="w-full flex items-center justify-center bg-primary hover:bg-primary/90 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition-all active:scale-[0.98]"
+                    >
+                      <span>ADD TO CART</span>
                     </button>
                   </div>
                 </div>
@@ -346,7 +358,7 @@ function ShopContent() {
                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 pt-8 border-t border-stone-200/60 dark:border-[hsl(224_30%_18%)]/60 mt-auto">
                      <div>
                        <p className="text-stone-500 dark:text-stone-400 text-sm font-medium mb-1">Total Price</p>
-                       <div className="text-4xl md:text-5xl font-extrabold text-primary tracking-tight">
+                       <div className="text-4xl md:text-5xl font-normal text-red-600 dark:text-red-400 tracking-tight">
                          {selectedProduct.price}
                        </div>
                      </div>

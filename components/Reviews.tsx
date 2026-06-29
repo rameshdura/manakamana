@@ -1,4 +1,11 @@
 import { Star, Quote } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
 
 export type Review = {
   id: string;
@@ -56,9 +63,9 @@ function Stars({ count }: { count: number }) {
 
 export default function Reviews({ reviews = sampleReviews }: { reviews?: Review[] }) {
   return (
-    <section className="py-20 bg-transparent" id="reviews">
+    <section className="py-6 md:py-8 bg-transparent" id="reviews">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <div className="text-center mb-8">
           <p className="text-primary font-semibold text-sm tracking-widest uppercase mb-3">
             Testimonials
           </p>
@@ -70,7 +77,39 @@ export default function Reviews({ reviews = sampleReviews }: { reviews?: Review[
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        {/* Mobile View: Slideable Carousel */}
+        <div className="md:hidden block px-4">
+          <Carousel opts={{ align: "start", loop: true }} className="w-full">
+            <CarouselContent className="-ml-2">
+              {reviews.map((review) => (
+                <CarouselItem key={review.id} className="pl-2 basis-full">
+                  <div className="bg-white dark:bg-[hsl(224_40%_9%)] rounded-2xl p-6 border border-stone-100 dark:border-[hsl(224_30%_18%)] shadow-sm flex flex-col h-full">
+                    <Quote className="w-6 h-6 text-primary/20 mb-3" />
+                    <p className="text-stone-700 dark:text-stone-300 leading-relaxed mb-4 flex-1 text-sm">
+                      &ldquo;{review.text}&rdquo;
+                    </p>
+                    <div className="border-t border-stone-100 dark:border-[hsl(224_30%_18%)] pt-3 mt-auto">
+                      <Stars count={review.rating} />
+                      <div className="flex items-center justify-between mt-2">
+                        <span className="font-semibold text-sm text-stone-900 dark:text-stone-100">{review.name}</span>
+                        {review.source && (
+                          <span className="text-xs text-stone-400 dark:text-stone-500">{review.source}</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="flex items-center justify-center gap-4 mt-6">
+              <CarouselPrevious className="static translate-y-0" size="icon" />
+              <CarouselNext className="static translate-y-0" size="icon" />
+            </div>
+          </Carousel>
+        </div>
+
+        {/* Desktop View: Grid */}
+        <div className="hidden md:grid grid-cols-3 gap-8">
           {reviews.map((review) => (
             <div
               key={review.id}
@@ -93,12 +132,6 @@ export default function Reviews({ reviews = sampleReviews }: { reviews?: Review[
           ))}
         </div>
 
-        {/* Optional: placeholder for future review count / CTA */}
-        <div className="text-center mt-12">
-          <p className="text-sm text-stone-400 dark:text-stone-500">
-            Reviews shown are samples &mdash; replace <code className="text-primary bg-primary/5 px-1.5 py-0.5 rounded text-xs dark:bg-[hsl(224_80%_65%)]/10">sampleReviews</code> in <code className="text-primary bg-primary/5 px-1.5 py-0.5 rounded text-xs dark:bg-[hsl(224_80%_65%)]/10">components/Reviews.tsx</code> with API data.
-          </p>
-        </div>
       </div>
     </section>
   );

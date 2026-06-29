@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { ShoppingBag, Package, Calendar, CheckCircle2, Clock } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -24,39 +24,20 @@ interface Order {
   items: OrderItem[];
 }
 
-export default function OrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Read from local storage
-    try {
-      const storedOrders = localStorage.getItem("manakamana_orders");
-      if (storedOrders) {
-        setOrders(JSON.parse(storedOrders));
-      }
-      
-      // For demonstration purposes, if you want to preview a fake order:
-      // if (!storedOrders) {
-      //   const dummyOrder: Order[] = [{
-      //     id: "MNK-8924-A92",
-      //     date: "June 24, 2026",
-      //     status: "Processing",
-      //     total: "¥2,700",
-      //     items: [
-      //       { id: "1", name: "Frozen Chicken Momo", price: "¥1,200", quantity: 1, image: "/momo.jpg" },
-      //       { id: "2", name: "Premium Dal Bhat Thali Set", price: "¥1,500", quantity: 1, image: "/thali.jpg" }
-      //     ]
-      //   }];
-      //   setOrders(dummyOrder);
-      // }
-      
-    } catch (error) {
-      console.error("Failed to load orders from local storage:", error);
-    } finally {
-      setLoading(false);
+function loadOrdersFromStorage(): Order[] {
+  try {
+    const storedOrders = localStorage.getItem("manakamana_orders");
+    if (storedOrders) {
+      return JSON.parse(storedOrders) as Order[];
     }
-  }, []);
+  } catch (error) {
+    console.error("Failed to load orders from local storage:", error);
+  }
+  return [];
+}
+
+export default function OrdersPage() {
+  const [orders] = useState<Order[]>(() => loadOrdersFromStorage());
 
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-[hsl(224_40%_6%)] font-sans selection:bg-primary/20 dark:selection:bg-[hsl(224_80%_65%)]/20 overflow-x-hidden flex flex-col">
@@ -73,13 +54,7 @@ export default function OrdersPage() {
             </p>
           </div>
 
-          {loading ? (
-            <div className="space-y-6">
-              {[1, 2].map((i) => (
-                <div key={i} className="w-full h-48 bg-white dark:bg-[hsl(224_40%_9%)] animate-pulse rounded-[2rem] border border-stone-200 dark:border-[hsl(224_30%_18%)]"></div>
-              ))}
-            </div>
-          ) : orders.length === 0 ? (
+          {orders.length === 0 ? (
             // Empty State
             <div className="bg-white dark:bg-[hsl(224_40%_9%)] border border-stone-200 dark:border-[hsl(224_30%_18%)] rounded-[2rem] p-12 text-center shadow-sm flex flex-col items-center justify-center animate-in fade-in slide-in-from-bottom-4 duration-700">
               <div className="w-24 h-24 bg-stone-100 dark:bg-[hsl(224_30%_15%)] rounded-full flex items-center justify-center mb-6">
@@ -87,7 +62,7 @@ export default function OrdersPage() {
               </div>
               <h3 className="text-2xl font-bold text-stone-900 dark:text-stone-100 mb-3">No orders yet</h3>
               <p className="text-stone-500 dark:text-stone-400 mb-8 max-w-md mx-auto text-lg">
-                Looks like you haven't made your first order with us yet. Discover authentic Nepali flavors in our shop!
+                Looks like you haven&apos;t made your first order with us yet. Discover authentic Nepali flavors in our shop!
               </p>
               <Link 
                 href="/shop" 

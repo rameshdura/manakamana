@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-poppins), Arial, Helvetica, sans-serif;
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -101,7 +101,7 @@
   --chart-4: hsl(170 40% 60%);
   --chart-5: hsl(150 30% 70%);
   
-  --radius: 0.5rem;
+  --radius: 0rem;
 
   /* Sidebar */
   --sidebar: hsl(220 33% 98%);
